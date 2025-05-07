@@ -1,9 +1,11 @@
 use clap::Parser;
 use monitoring::Monitoring;
 use reth::providers::CanonStateSubscriptions;
+use reth::CliRunner;
 use reth_optimism_cli::{chainspec::OpChainSpecParser, Cli};
 use reth_optimism_node::node::OpAddOnsBuilder;
 use reth_optimism_node::OpNode;
+use tokio::runtime::Runtime;
 
 #[cfg(feature = "flashblocks")]
 use payload_builder::CustomOpPayloadBuilder;
@@ -30,11 +32,14 @@ mod tx_signer;
 use monitor_tx_pool::monitor_tx_pool;
 
 fn main() {
+    let runtime = Runtime::new().unwrap();
+    let runner = CliRunner::from_runtime(runtime);
+
     spanjob::try_init().unwrap();
     spanjob::spawn_printer();
 
     Cli::<OpChainSpecParser, args::OpRbuilderArgs>::parse()
-        .run(|builder, builder_args| async move {
+        .with_runner(runner, |builder, builder_args| async move {
             let rollup_args = builder_args.rollup_args;
 
             let op_node = OpNode::new(rollup_args.clone());
