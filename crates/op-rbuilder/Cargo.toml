@@ -70,7 +70,7 @@ tower = "0.4"
 serde_with.workspace = true
 serde.workspace = true
 secp256k1.workspace = true
-tokio.workspace = true
+tokio = { workspace = true, features = ["tracing"] }
 jsonrpsee = { workspace = true }
 async-trait = { workspace = true }
 clap_builder = { workspace = true }
@@ -90,6 +90,8 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
 
 # `flashblocks` branch
 rollup-boost = { git = "http://github.com/flashbots/rollup-boost", rev = "60885346d4cf7f241de82790478195747433d472" }
+
+spanjob.path = "/Users/denis/RationalIntelligence/spanjob"
 
 [target.'cfg(unix)'.dependencies]
 tikv-jemallocator = { version = "0.6", optional = true }

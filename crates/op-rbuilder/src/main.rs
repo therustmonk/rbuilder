@@ -30,6 +30,9 @@ mod tx_signer;
 use monitor_tx_pool::monitor_tx_pool;
 
 fn main() {
+    spanjob::try_init().unwrap();
+    spanjob::spawn_printer();
+
     Cli::<OpChainSpecParser, args::OpRbuilderArgs>::parse()
         .run(|builder, builder_args| async move {
             let rollup_args = builder_args.rollup_args;
